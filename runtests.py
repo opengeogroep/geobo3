@@ -46,10 +46,10 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(str(self.l1.getWkt()),'LINESTRING (10 0, 1 0, 0 0)','')
         #Set WKT
         l2 = geobo3.Line()
-        l2.setFromWkt(' LINESTRING (3 3, 10 5,-6.4 -8) ')
+        l2.setFromWkt(' LINESTRING (3 3, 10 5,-6.4 -8.001) ')
         l2.reverse()
         #TODO issue #2: Somehow all coords are converted to float, shouldn't they be converted to int when the end with .0?
-        self.assertEqual(str(l2.getWkt()),'LINESTRING (-6.4 -8, 10 5, 3 3)','')
+        self.assertEqual(str(l2.getWkt()),'LINESTRING (-6.4 -8.001, 10 5, 3 3)','')
         
     def test_polygon(self):
         pg1 = geobo3.Polygon()
@@ -77,6 +77,23 @@ class TestSequenceFunctions(unittest.TestCase):
         pg2.setFromWkt('POLYGON((-2 2, 1 4, 3 3, 2 2, 4 1, 4 -1, 1 -2, -1 -2, -1 0),(-1 2, 2 3, 1 1, 0 1), (2 -1, 3 -1, 3 1, 2 1))')
         #TODO issue #3: Somehow generating a POLYGON with inner(s) is not working
         self.assertEqual(pg2.getArea(),0,'')
-    
+
+    def test_stArea(self):
+        #select i.pand, i.opp_pand, st_area(p.geovlak), st_astext(st_force_2d(p.geovlak))from infofolio_utrecht i join pand p on i.pand = p.identificatie limit 3;
+        #305100000000003;180.843199999797;180.843199999797;"POLYGON((125061.08 474625.44,125051.76 474628.12,125046.6 474610.2,125055.92 474607.52,125061.08 474625.44))"
+        #100000000004;206.016000000266;206.016000000266;"POLYGON((125075 474538.44,125065.56 474542.28,125057.96 474523.48,125067.36 474519.68,125075 474538.44))"
+        #305100000000005;221.587019999572;221.587019999572;"POLYGON((125085.695 474532.234,125086.28 474533.72,125077.04 474537.6,125068.88 474517.04,125078.24 474513.28,125085.695 474532.234))"
+        pg3 = geobo3.Polygon()
+        pg3.setFromWkt('POLYGON((125061.08 474625.44,125051.76 474628.12,125046.6 474610.2,125055.92 474607.52,125061.08 474625.44))')
+        self.assertEqual(pg3.getArea(),180,'')
+
+        pg3 = geobo3.Polygon()
+        pg3.setFromWkt('POLYGON((125075 474538.44,125065.56 474542.28,125057.96 474523.48,125067.36 474519.68,125075 474538.44))')
+        self.assertEqual(pg3.getArea(),206,'')
+        pg3 = geobo3.Polygon()
+        pg3.setFromWkt('POLYGON((125085.695 474532.234,125086.28 474533.72,125077.04 474537.6,125068.88 474517.04,125078.24 474513.28,125085.695 474532.234))')
+        self.assertEqual(pg3.getArea(),221,'')
+
+        
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSequenceFunctions)
 unittest.TextTestRunner(verbosity=2).run(suite)
