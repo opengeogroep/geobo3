@@ -1,7 +1,6 @@
 import math
 import copy
 import string
-
 class BBox():
 
     def __init__(self, minx, miny, maxx, maxy):
@@ -43,8 +42,8 @@ class BBox():
 class Point():
 
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        self.x = float(x)
+        self.y = float(y)
     
     def __str__(self):
         return 'Point[' + str(self.x) + ',' + str(self.y) + ']'
@@ -80,7 +79,9 @@ class Point():
         return result
 
     def getWkt(self):
-        return 'POINT (' + str(self.x) + ' ' + str(self.y) + ')'
+        strx = Util().formatNumber(self.x)
+        stry = Util().formatNumber(self.y)
+        return 'POINT (' + strx + ' ' + stry + ')'
     
         
     def getBBox(self):
@@ -152,7 +153,9 @@ class Line():
     def _getWktCoords(self, closed=False):
         result = []
         for p in self.points:
-            result.append(str(p.x) + ' ' + str(p.y))
+            strx = Util().formatNumber(p.x)
+            stry = Util().formatNumber(p.y)
+            result.append(strx + ' ' + stry)
         if not closed:
             return result
         else:
@@ -287,7 +290,19 @@ class Util():
                     points.append(p)
                     
         return points
-
+    
+    def formatNumber(self,num):
+        #num to string
+        strnum = str(num)
+        #check if there is a . inside
+        if strnum.find('.') > -1:
+            #remove trailing zeros
+            strnum2 = strnum.rstrip('0')
+            strnum3 = strnum2.rstrip('.')
+            return strnum3
+        else:        
+            return strnum
+    
     def _findBackward(self,s,subs):
         result = -1
         index = s[::-1].find(subs)

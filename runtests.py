@@ -18,7 +18,6 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(_area1, _area, 'bb1 not equal to bb2')
         
     def test_point(self):
-        self.assertEqual(str(self.p1),'Point[0,0]','')
         self.assertEqual(self.p1.getWkt(),'POINT (0 0)','')
         self.assertEqual(self.p1.distanceTo(self.p2),1,'')
 
@@ -39,7 +38,7 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(self.l1.getLength(),10,'')
 
         #Get the BBOX for this line
-        self.assertEqual(str(self.l1.getBBox()),str(geobo3.BBox(0,0,10,0)),'')
+        self.assertEqual(str(self.l1.getBBox()),str(geobo3.BBox(0.0,0.0,10.0,0.0)),'')
         #Get WKT
         self.assertEqual(str(self.l1.getWkt()),'LINESTRING (0 0, 1 0, 10 0)','')
         #revert
@@ -50,7 +49,7 @@ class TestSequenceFunctions(unittest.TestCase):
         l2.setFromWkt(' LINESTRING (3 3, 10 5,-6.4 -8) ')
         l2.reverse()
         #TODO issue #2: Somehow all coords are converted to float, shouldn't they be converted to int when the end with .0?
-        self.assertEqual(str(l2.getWkt()),'LINESTRING (-6.4 -8.0, 10.0 5.0, 3.0 3.0)','')
+        self.assertEqual(str(l2.getWkt()),'LINESTRING (-6.4 -8, 10 5, 3 3)','')
         
     def test_polygon(self):
         pg1 = geobo3.Polygon()
