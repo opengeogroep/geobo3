@@ -49,7 +49,7 @@ class TestSequenceFunctions(unittest.TestCase):
         l2 = geobo3.Line()
         l2.setFromWkt(' LINESTRING (3 3, 10 5,-6.4 -8) ')
         l2.reverse()
-        #TODO: Somehow all coords are converted to float, shouldn't they be converted to int when the end with .0?
+        #TODO issue #2: Somehow all coords are converted to float, shouldn't they be converted to int when the end with .0?
         self.assertEqual(str(l2.getWkt()),'LINESTRING (-6.4 -8.0, 10.0 5.0, 3.0 3.0)','')
         
     def test_polygon(self):
@@ -65,7 +65,7 @@ class TestSequenceFunctions(unittest.TestCase):
         h1.addXy(2, 2)
         h1.addXy(3, 3)
         h1.addXy(2, 4)
-        #TODO: Inner is not processed correctly when generating wkt
+        #TODO issue #1: Inner is not processed correctly when generating wkt
         pg1.addInner(h1)
         
         self.assertEqual(pg1.getBBox().getArea(),20,'')
@@ -76,7 +76,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
         pg2 = geobo3.Polygon()
         pg2.setFromWkt('POLYGON((-2 2, 1 4, 3 3, 2 2, 4 1, 4 -1, 1 -2, -1 -2, -1 0),(-1 2, 2 3, 1 1, 0 1), (2 -1, 3 -1, 3 1, 2 1))')
-        #TODO: Somehow generating a POLYGON with inner(s) is not working
+        #TODO issue #3: Somehow generating a POLYGON with inner(s) is not working
         self.assertEqual(pg2.getArea(),0,'')
     
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSequenceFunctions)
