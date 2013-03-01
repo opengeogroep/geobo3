@@ -1,4 +1,4 @@
 geobo3
 ======
 
-geobo3
+A simple python suite for geometry functions
