@@ -78,7 +78,7 @@ class TestSequenceFunctions(unittest.TestCase):
         #TODO issue #3: Somehow generating a POLYGON with inner(s) is not working
         self.assertEqual(pg2.getArea(),21.5,'')
 
-    def test_stArea(self):
+    def test_stArea1(self):
         #select i.pand, i.opp_pand, st_area(p.geovlak), st_astext(st_force_2d(p.geovlak))from infofolio_utrecht i join pand p on i.pand = p.identificatie limit 3;
         #305100000000003;180.843199999797;180.843199999797;"POLYGON((125061.08 474625.44,125051.76 474628.12,125046.6 474610.2,125055.92 474607.52,125061.08 474625.44))"
         #100000000004;206.016000000266;206.016000000266;"POLYGON((125075 474538.44,125065.56 474542.28,125057.96 474523.48,125067.36 474519.68,125075 474538.44))"
@@ -86,17 +86,17 @@ class TestSequenceFunctions(unittest.TestCase):
         pg3 = geobo3.Polygon()
         pg3.setFromWkt('POLYGON((125061.08 474625.44,125051.76 474628.12,125046.6 474610.2,125055.92 474607.52,125061.08 474625.44))')
         #self.assertEqual(str(pg3.getWkt()),'POLYGON((125061.08 474625.44,125051.76 474628.12,125046.6 474610.2,125055.92 474607.52,125061.08 474625.44))','')
-        self.assertEqual(pg3.getArea(), 180.84320000000298,'')
-
+        self.assertEqual(pg3.getArea(), 180.843199999797,'rounding error, 180.84320000000298')
+    def test_stArea2(self):
         pg4 = geobo3.Polygon()
         pg4.setFromWkt('POLYGON((125075 474538.44,125065.56 474542.28,125057.96 474523.48,125067.36 474519.68,125075 474538.44))')
         #self.assertEqual(str(pg4.getWkt()),'POLYGON((125075 474538.44,125065.56 474542.28,125057.96 474523.48,125067.36 474519.68,125075 474538.44))','')
-        self.assertEqual(pg4.getArea(),206.01599999982864,'')
-        
+        self.assertEqual(pg4.getArea(),206.016000000266,'rounding error, 206.01599999982864')
+    def test_stArea3(self):
         pg5 = geobo3.Polygon()
         pg5.setFromWkt('POLYGON((125085.695 474532.234,125086.28 474533.72,125077.04 474537.6,125068.88 474517.04,125078.24 474513.28,125085.695 474532.234))')
         #self.assertEqual(str(pg5.getWkt()),'POLYGON((125085.695 474532.234,125086.28 474533.72,125077.04 474537.6,125068.88 474517.04,125078.24 474513.28,125085.695 474532.234))','')
-        self.assertEqual(pg5.getArea(),221.58701999904588,'')
+        self.assertEqual(pg5.getArea(),221.587019999572,'221.58701999904588')
 
         
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSequenceFunctions)
