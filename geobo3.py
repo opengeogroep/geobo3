@@ -98,6 +98,11 @@ class Line():
     def __str__(self):
         return 'Line[' + str(len(self.points)) + ' points]'
     
+    def addPoints(self, pointset):
+        if len(pointset) > 0:
+            for p in pointset:
+                self.points.append(p)
+        
     def addPoint(self, point):
         self.points.append(point)
     
@@ -268,8 +273,9 @@ class Polygon():
             lastbracket = Util()._findBackward(wkt, ')')
             wkt = wkt[firstbracket+1:lastbracket]
             boundarylist = []
-            
-            #self.points = wktPartToPoints(wkt[7:])
+            #TODO: Works for outer only. Should split all sections contained by ()()()
+            myset = Util().wktPartToPoints(wkt)
+            self.outer.addPoints(myset)
         else:
             raise Exception('Invalid WKT for POLYGON')
         return result
